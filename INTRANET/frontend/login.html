@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Acesso</title>
+
+  <style>
+    /* ======== RESET ========= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a1d, #0f3460);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* Background circles */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      animation: float 6s infinite ease-in-out;
+    }
+
+    .c1 { width: 200px; height: 200px; top: 20%; left: 10%; }
+    .c2 { width: 300px; height: 300px; bottom: 10%; right: 15%; animation-delay: 2s; }
+    .c3 { width: 120px; height: 120px; bottom: 40%; left: 70%; animation-delay: 1s; }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-25px); }
+      100% { transform: translateY(0); }
+    }
+
+    /* ======== LOGIN CARD ========= */
+    .container {
+      z-index: 10;
+      width: 380px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 18px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 28px;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      outline: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .input-group input:focus {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn {
+      width: 100%;
+      background: #0f9d58;
+      padding: 14px;
+      margin-top: 10px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #0c7e47;
+      transform: scale(1.02);
+    }
+
+    .footer-text {
+      margin-top: 20px;
+      font-size: 13px;
+      text-align: center;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- efeitos -->
+  <div class="circle c1"></div>
+  <div class="circle c2"></div>
+  <div class="circle c3"></div>
+
+  <!-- card -->
+  <div class="container">
+    <h2>Área de Acesso</h2>
+
+    <form id="loginForm">
+
+      <div class="input-group">
+        <label>E-mail</label>
+        <input type="email" id="email" placeholder="Digite seu E-mail" required>
+      </div>
+
+      <div class="input-group">
+        <label>Senha</label>
+        <input type="password" id="senha" placeholder="Digite sua senha" required>
+      </div>
+
+      <button class="btn" type="submit">Entrar</button>
+
+      <p class="footer-text">© 2025 • Sistema Corporativo</p>
+    </form>
+  </div>
+
+  <!-- === SCRIPT DE ENVIO === -->
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const dados = {
+        email: document.getElementById("email").value,
+        senha: document.getElementById("senha").value
+      };
+
+      try {
+        const response = await fetch("http://localhost:3000/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dados)
+        });
+
+        const resultado = await response.json();
+
+        if (response.ok) {
+          alert("Login registrado com sucesso!");
+        } else {
+          alert("Erro ao registrar: " + resultado.erro);
+        }
+
+      } catch (erro) {
+        alert("Erro de conexão com o servidor: " + erro.message);
+      }
+    });
+  </script>
+
+</body>
+</html>
